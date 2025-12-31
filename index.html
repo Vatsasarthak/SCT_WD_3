@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMaster | Interactive Quiz Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="screen active">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+                <h1>QuizMaster</h1>
+            </div>
+            <div class="welcome-content">
+                <h2>Test Your Knowledge!</h2>
+                <p>Challenge yourself with this interactive quiz featuring multiple question types. Select a category to begin.</p>
+                
+                <div class="category-selector">
+                    <h3>Choose a Category</h3>
+                    <div class="category-grid">
+                        <div class="category-card" data-category="all">
+                            <i class="fas fa-globe"></i>
+                            <h4>All Topics</h4>
+                            <p>Mixed questions from various categories</p>
+                        </div>
+                        <div class="category-card" data-category="science">
+                            <i class="fas fa-flask"></i>
+                            <h4>Science</h4>
+                            <p>Biology, Chemistry, Physics</p>
+                        </div>
+                        <div class="category-card" data-category="history">
+                            <i class="fas fa-landmark"></i>
+                            <h4>History</h4>
+                            <p>World events and historical figures</p>
+                        </div>
+                        <div class="category-card" data-category="tech">
+                            <i class="fas fa-laptop-code"></i>
+                            <h4>Technology</h4>
+                            <p>Computers, programming, and IT</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quiz-settings">
+                    <h3>Quiz Settings</h3>
+                    <div class="settings-options">
+                        <div class="setting">
+                            <label for="timer">Timer per question:</label>
+                            <select id="timer">
+                                <option value="30">30 seconds</option>
+                                <option value="45" selected>45 seconds</option>
+                                <option value="60">60 seconds</option>
+                                <option value="0">No timer</option>
+                            </select>
+                        </div>
+                        <div class="setting">
+                            <label for="difficulty">Difficulty:</label>
+                            <select id="difficulty">
+                                <option value="all">All levels</option>
+                                <option value="easy" selected>Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="start-btn" class="btn-primary">
+                    <i class="fas fa-play"></i> Start Quiz
+                </button>
+                
+                <div class="high-score-display">
+                    <h3>High Score</h3>
+                    <p id="high-score-value">No high score yet</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen">
+            <header class="quiz-header">
+                <div class="logo-small">
+                    <i class="fas fa-brain"></i>
+                    <span>QuizMaster</span>
+                </div>
+                
+                <div class="quiz-info">
+                    <div class="timer-container">
+                        <i class="fas fa-clock"></i>
+                        <span id="timer-display">45</span>s
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <span id="progress-text">Question 1 of 10</span>
+                    </div>
+                    <div class="score-container">
+                        <i class="fas fa-star"></i>
+                        <span id="current-score">0</span> points
+                    </div>
+                </div>
+            </header>
+            
+            <main class="quiz-content">
+                <div class="question-container">
+                    <div class="question-header">
+                        <span class="question-type" id="question-type">Single Choice</span>
+                        <span class="question-difficulty" id="question-difficulty">Easy</span>
+                    </div>
+                    <h2 id="question-text">Question will appear here</h2>
+                    <div id="options-container">
+                        <!-- Options will be dynamically generated -->
+                    </div>
+                    
+                    <div class="fill-in-blank-container" id="fill-in-container" style="display: none;">
+                        <input type="text" id="fill-in-answer" placeholder="Type your answer here...">
+                        <button id="submit-fill-answer" class="btn-secondary">Submit Answer</button>
+                    </div>
+                    
+                    <div class="feedback" id="feedback-message">
+                        <!-- Feedback will appear here -->
+                    </div>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button id="prev-btn" class="btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button id="next-btn" class="btn-primary">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button id="submit-quiz-btn" class="btn-submit">
+                        <i class="fas fa-flag-checkered"></i> Submit Quiz
+                    </button>
+                </div>
+            </main>
+        </div>
+        
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="results-content">
+                <div class="results-header">
+                    <i class="fas fa-trophy"></i>
+                    <h1>Quiz Completed!</h1>
+                    <p>Your results are ready</p>
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-circle">
+                        <svg width="200" height="200">
+                            <circle cx="100" cy="100" r="90" stroke="#2a2a3c" stroke-width="10" fill="transparent"></circle>
+                            <circle id="score-circle" cx="100" cy="100" r="90" stroke="#6c5ce7" stroke-width="10" fill="transparent" stroke-linecap="round" stroke-dasharray="565.48" stroke-dashoffset="565.48"></circle>
+                        </svg>
+                        <div class="score-percent">
+                            <span id="score-percentage">0%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="score-details">
+                        <div class="score-card correct">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h3>Correct Answers</h3>
+                                <p id="correct-count">0</p>
+                            </div>
+                        </div>
+                        <div class="score-card incorrect">
+                            <i class="fas fa-times-circle"></i>
+                            <div>
+                                <h3>Incorrect Answers</h3>
+                                <p id="incorrect-count">0</p>
+                            </div>
+                        </div>
+                        <div class="score-card total">
+                            <i class="fas fa-star"></i>
+                            <div>
+                                <h3>Total Score</h3>
+                                <p id="total-score">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="results-actions">
+                    <button id="restart-btn" class="btn-primary">
+                        <i class="fas fa-redo"></i> Restart Quiz
+                    </button>
+                    <button id="review-btn" class="btn-secondary">
+                        <i class="fas fa-chart-bar"></i> Review Answers
+                    </button>
+                    <button id="new-category-btn" class="btn-secondary">
+                        <i class="fas fa-list"></i> New Category
+                    </button>
+                </div>
+                
+                <div class="high-score-update" id="high-score-update">
+                    <i class="fas fa-crown"></i>
+                    <p>New High Score! <span id="new-high-score"></span></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Audio elements for sound effects -->
+        <audio id="correct-sound" preload="auto">
+            <source src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="incorrect-sound" preload="auto">
+            <source src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" type="audio/mpeg">
+        </audio>
+        <audio id="click-sound" preload="auto">
+            <source src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+    
+    <footer>
+        <p>QuizMaster - Interactive Quiz Game | Built with HTML, CSS & JavaScript</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
